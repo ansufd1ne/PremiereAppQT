@@ -14,8 +14,7 @@ Widget::Widget(QWidget *p_parent) : QWidget(p_parent)
     disposition->addWidget(m_labelCompteur);
     disposition->addWidget(boutonAjouter);
 
-    // A COMPLETER : remplacez les ______
-    connect(boutonAjouter, &QPushButton::______, this, &Widget::______);
+    connect(boutonAjouter, &QPushButton::clicked, this, &Widget::incrementer);
 
     // --- Partie 4 : un timer qui ne bloque rien ---
     m_minuterie = new QTimer(this);
@@ -33,18 +32,16 @@ Widget::Widget(QWidget *p_parent) : QWidget(p_parent)
     disposition->addWidget(boutonArret);
 
     m_minuterieTrame = new QTimer(this);
-    // A COMPLETER : remplacez les ______
-    connect(m_minuterieTrame, &QTimer::timeout, this, &Widget::______);
-    m_minuterieTrame->start(______);   // une trame toutes les 200 ms
+    connect(m_minuterieTrame, &QTimer::timeout, this, &Widget::lireTrame);
+    m_minuterieTrame->start(200);   // une trame toutes les 200 ms
 
-    // A ECRIRE : le connect qui relie le clic de boutonArret au slot arreter()
+    connect(boutonArret, &QPushButton::clicked, this, &Widget::arreter);
 }
 
 void Widget::incrementer()
 {
-    // A COMPLETER : remplacez les ______
-    m_compteur______;   // augmenter le compteur de 1
-    m_labelCompteur->setText("Compteur : " + QString::number(______));
+    m_compteur++;   // augmenter le compteur de 1
+    m_labelCompteur->setText("Compteur : " + QString::number(m_compteur));
 }
 
 void Widget::lireTrame()
@@ -58,6 +55,7 @@ void Widget::lireTrame()
 
 void Widget::arreter()
 {
-    // A ECRIRE : arrêter les deux timers (méthode stop() d'un QTimer),
-    //            puis écrire "ARRET demande" dans le journal (méthode appendPlainText)
+    m_minuterie->stop();
+    m_minuterieTrame->stop();
+    m_journal->appendPlainText("ARRET demande");
 }
